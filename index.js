@@ -6,6 +6,11 @@ let samples = [];
 // create a scale multiplier (this sets the frequency)
 let scale = 0.05 // (48000 / 2pi) * scale = frequency. ~764hz in this case
 
+// set the frequency
+function frequencySetter(freq) {
+    return freq / (samplerate / (2 * Math.PI));
+}
+
 // create gain 
 let gain = 0.5
 
@@ -17,7 +22,7 @@ let samplerate = 48000;
 
 // push sine values to the array
 for (let x = 0; x < samplerate * duration; x++) {
-    samples.push(Math.sin(x * scale) * gain);
+    samples.push(Math.sin(x * frequencySetter(440)) * gain);
 }
 
 // ceremony 
