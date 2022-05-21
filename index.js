@@ -1,40 +1,51 @@
 const fs = require('fs');
 
-// create an array
-let samples = [];
+// set samplerate
+const SAMPLERATE = 48000;
 
-// create a scale multiplier (this sets the frequency)
-let scale = 0.05 // (48000 / 2pi) * scale = frequency. ~764hz in this case
+// generate random notes
+function randomNumber(min, max) {
+    return Math.random() * (max - min) + min;
+}
 
 // set the frequency
 function frequencySetter(freq) {
-    return freq / (samplerate / (2 * Math.PI));
+    return freq / (SAMPLERATE / (2 * Math.PI));
 }
 
-// create gain 
-let gain = 0.5
-
-// set duration
-let duration = 1;
-
-// set samplerate
-let samplerate = 48000;
-
-// push sine values to the array
-for (let x = 0; x < samplerate * duration; x++) {
-    samples.push(Math.sin(x * frequencySetter(440)) * gain);
+// renders frequency, gain, duration to a list of samples
+function renderSound(freq, gain, duration) {
+    // 
+    let samples = []
+    // push sine values to the array
+    for (let x = 0; x < SAMPLERATE * duration; x++) {
+        samples.push(Math.sin(x * frequencySetter(freq) * gain));
+    }
+    return samples;
 }
 
-// ceremony 
-let arr = new Float32Array(samples);
-let dataview = new DataView(arr.buffer)
-dataview.setFloat32(0, arr[0], true);
-let buf = new Uint8Array(arr.buffer);
+// list of frequency values
+let notefrequencies = [randomNumber(200, 900), randomNumber(200, 900), randomNumber(200, 900), randomNumber(200, 900)];
 
 // open a file
 let fd = fs.openSync('./audio.raw', 'w');
-// write the buffer to the file
-fs.writeSync(fd, buf);
+
+
+// write notes to the file
+for (const freq of notefrequencies) {
+    let gain = 0.5
+    let duration = randomNumber(0.1, 1)
+    const samples = renderSound(freq, gain, duration);
+    // ceremony 
+    let arr = new Float32Array(samples);
+    let dataview = new DataView(arr.buffer)
+    dataview.setFloat32(0, arr[0], true);
+    let buf = new Uint8Array(arr.buffer);
+    // write the buffer to the file
+    fs.writeSync(fd, buf);
+}
+
+
 // close the file
 fs.closeSync(fd);
 
