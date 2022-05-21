@@ -9,6 +9,6 @@ Generated numbers to create an audio waveform.
 
 cd into project
 
-install ffmpeg if you don't already have it
+install ffmpeg if you don't already have it`
 
 in the project directory run `ffplay -f f32le -ar 48000 audio.raw` 

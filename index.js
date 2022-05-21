@@ -9,8 +9,14 @@ let scale = 0.05 // (48000 / 2pi) * scale = frequency. ~764hz in this case
 // create gain 
 let gain = 0.5
 
+// set duration
+let duration = 1;
+
+// set samplerate
+let samplerate = 48000;
+
 // push sine values to the array
-for (let x = 0; x < 48000; x++) {
+for (let x = 0; x < samplerate * duration; x++) {
     samples.push(Math.sin(x * scale) * gain);
 }
 
