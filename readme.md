@@ -5,12 +5,10 @@ Wherein I create an audio file from scratch, and read it with FFMPEG
 Generated numbers to create an audio waveform. 
 
 ## Run instructions
+Requires Node and (ffmpeg)[https://ffmpeg.org/]
+
 `git clone git@github.com:DevinCLane/raw-audio.git`
 
-cd into project
+`cd raw-audio`
 
 to generate new audio, run `node index`
-
-install ffmpeg if you don't already have it`
-
-in the project directory run `ffplay -f f32le -ar 48000 audio.raw` 
