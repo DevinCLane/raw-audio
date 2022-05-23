@@ -5,7 +5,7 @@ Wherein I create an audio file from scratch, and read it with FFMPEG
 Generated numbers to create an audio waveform. 
 
 ## Run instructions
-Requires Node and (ffmpeg)[https://ffmpeg.org/]
+Requires Node and [FFMPEG]([https://ffmpeg.org/])
 
 `git clone git@github.com:DevinCLane/raw-audio.git`
 
