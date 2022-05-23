@@ -1,3 +1,4 @@
+const { execSync } = require('child_process');
 const fs = require('fs');
 const { exec } = require('node:child_process')
 
@@ -56,9 +57,11 @@ for (const note of notes) {
     const samples = renderSound(note.freq, gain, duration);
     
     // ceremony 
+    // create a Float32 array
     let arr = new Float32Array(samples);
     let dataview = new DataView(arr.buffer)
-    dataview.setFloat32(0, arr[0], true);
+    // set the format for how to access the data
+    dataview.setFloat32(0, arr[0], true); // specify little endian with 'true'
     let buf = new Uint8Array(arr.buffer);
     // write the buffer to the file
     fs.writeSync(fd, buf);
@@ -66,17 +69,16 @@ for (const note of notes) {
 // close the file
 fs.closeSync(fd);
 
-// inspiration from https://www.sohamkamani.com/nodejs/executing-shell-commands/
-exec('ffplay -f f32le -ar 48000 audio.raw', (err, output) => {
-    // once the command has completed, the callback function is called
-    if (err) {
-        // log and return if we encounter an error
-        console.error("could not execute command: ", err)
-        return
-    }
-    // log the output received from the command
-    console.log("Output: \n", output)
+// delete the old file if it exists
+try {
+    let deleteOld = fs.unlinkSync('file.wav');
+} catch {
 }
-);
+// convert the file to .wav
+let output = execSync('ffmpeg -f f32le -ar 48000 -i audio.raw file.wav');
+// play the file
+let play = execSync('ffplay file.wav')
+console.log(play);
+// console.log("Output: \n", output)
 
 // run node index and the process should run
