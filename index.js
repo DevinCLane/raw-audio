@@ -89,7 +89,7 @@ try {
 // convert the file to .wav
 let output = execSync('ffmpeg -f f32le -ar 48000 -i audio.raw file.wav');
 // play the file
-let play = execSync('ffplay file.wav')
+let play = execSync('ffplay -showmode 1 file.wav')
 console.log(play);
 // console.log("Output: \n", output)
 
